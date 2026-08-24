@@ -1,0 +1,55 @@
+# ============================================================
+# CODEOWNERS — hantech-eng-wtp-ic-ai 標準範本
+# ============================================================
+# 用途：搭配 branch protection ruleset 的「Require review from Code
+# Owners」規則，讓不同路徑的變更自動指定對應角色審查，落實五角色 RACI。
+#
+# 套用前準備：
+#   1. 到 Organization → Teams 建立以下五個 Team（slug 建議如下）
+#        @hantech-eng-wtp-ic-ai/ontology-owner
+#        @hantech-eng-wtp-ic-ai/pe-signoff
+#        @hantech-eng-wtp-ic-ai/process-operator
+#        @hantech-eng-wtp-ic-ai/tech-lead
+#        @hantech-eng-wtp-ic-ai/eng-manager
+#   2. 把此檔放在 repo 根目錄或 .github/ 目錄下（此路徑優先）
+#   3. Team 必須對這個 repo 至少有 Read 權限，Code Owner 審查才會生效
+#
+# 規則：由下而上比對，最後一條符合的規則生效（跟 .gitignore 邏輯相同）
+# ============================================================
+
+# 預設 fallback：沒有更精確規則命中時，由 Tech Lead 審查
+*                           @hantech-eng-wtp-ic-ai/tech-lead
+
+# ---- 規則表 / Golden Master（Ontology Owner 內容擁有者）----
+# WT / IC rule table 本體、DMN-style 決策表
+/rules/                     @hantech-eng-wtp-ic-ai/ontology-owner
+/rule-tables/                @hantech-eng-wtp-ic-ai/ontology-owner
+*.xlsx                       @hantech-eng-wtp-ic-ai/ontology-owner
+
+# Golden Master case library（案例庫本身，內容變更需 Ontology Owner + PE 雙審）
+/golden-master/               @hantech-eng-wtp-ic-ai/ontology-owner @hantech-eng-wtp-ic-ai/pe-signoff
+
+# ---- PE Sign-off 關卡（正式簽署 / 核准節點，需與 Ontology Owner 分開）----
+/approvals/                   @hantech-eng-wtp-ic-ai/pe-signoff
+/sign-off/                    @hantech-eng-wtp-ic-ai/pe-signoff
+
+# ---- Rule engine 程式碼（Tech Lead 擁有）----
+/src/                          @hantech-eng-wtp-ic-ai/tech-lead
+/api/                          @hantech-eng-wtp-ic-ai/tech-lead
+/tests/                        @hantech-eng-wtp-ic-ai/tech-lead
+
+# ---- n8n 工作流程 / Process 串接（Process/Workflow Operator）----
+/workflows/                    @hantech-eng-wtp-ic-ai/process-operator
+/n8n/                          @hantech-eng-wtp-ic-ai/process-operator
+
+# ---- CI/CD、GPU host、Airflow DAG（Tech Lead）----
+/.github/workflows/            @hantech-eng-wtp-ic-ai/tech-lead
+/dags/                          @hantech-eng-wtp-ic-ai/tech-lead
+
+# ---- 架構文件 / 權限政策（Engineering Manager 最終仲裁）----
+/docs/architecture/            @hantech-eng-wtp-ic-ai/eng-manager
+/DOC-2026-WTP-AI-002*           @hantech-eng-wtp-ic-ai/eng-manager
+
+# ---- 治理檔案本身（避免有人偷改審查規則卻不用被審查）----
+/.github/CODEOWNERS             @hantech-eng-wtp-ic-ai/eng-manager
+/.github/PULL_REQUEST_TEMPLATE.md @hantech-eng-wtp-ic-ai/eng-manager
