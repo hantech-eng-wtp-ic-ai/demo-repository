@@ -1,0 +1,13 @@
+name: CI Regression Test
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  regression-test:
+    name: ci/regression-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder regression test
+        run: echo "Regression test placeholder - replace with real Golden Master test runner"
